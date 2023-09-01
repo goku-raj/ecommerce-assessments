@@ -5,12 +5,16 @@ import { useState } from "react";
 import * as yup from "yup";
 import { shades } from "../../theme";
 import Shipping from "./Shipping";
+import Payment from "./Payment";
+import { loadStripe } from "@stripe/stripe-js";
 
 const Checkout = () => {
   const [activeStep, setActiveStep] = useState(0);
   const cart = useSelector((state) => state.cart.cart);
   const isFirstStep = activeStep === 0;
   const isSecondStep = activeStep === 1;
+
+  const stripePromise = loadStripe(import.meta.VITE_APP_STRIPE_PUBLISHABLE_KEY);
 
   const handleFormSubmit = async (values, actions) => {
     setActiveStep(activeStep + 1);
@@ -30,8 +34,29 @@ const Checkout = () => {
     actions.setTouched({});
   };
 
-  async function makePayment(values) {};
-
+  async function makePayment(values) {
+    const stripe = await stripePromise;
+    const requestBody = {
+      userName: [values.firstName, values.lastName].join(" "),
+      email: values.email,
+      products: cart.map(({ id, count }) => ({
+        id,
+        count,
+      })),
+    };
+    const response = await fetch("https://ecommerce-g73f.onrender.com/api/orders", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + import.meta.VITE_APP_STRAPI_TOKEN,
+        "Content-Type": "application/json",
+    },
+      body: JSON.stringify(requestBody),
+    });
+    const session = await response.json();
+    await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+  }
   return (
     <Box width="80%" m="100px auto">
       <Stepper activeStep={activeStep} sx={{ m: "20px 0" }}>
@@ -91,7 +116,6 @@ const Checkout = () => {
                       borderRadius: 0,
                       padding: "15px 40px",
                     }}
-                    onClick={() => setActiveStep(activeStep - 1)}
                   >
                     Back
                   </Button>
