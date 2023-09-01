@@ -8,36 +8,26 @@ import { shades } from "../../theme";
 
 // List of image file paths
 const imagePaths = [
-    "assets/speaker.jpeg",
-    "assets/earbuds.jpeg",
-    "assets/smartwatch.jpeg",
-    "assets/speaker1.jpg",
-    "assets/headphone.jpeg",
+    "/assets/speaker.jpeg",
+    "/assets/earbuds.jpeg",
+    "/assets/smartwatch.jpeg",
+    "/assets/speaker1.jpg",
+    "/assets/headphone.jpeg",
 ];
-
-// Function to import all images
-async function importAllImages() {
-  const images = {};
-
-  for (const path of imagePaths) {
-    const module = await import(path /* @vite-ignore */);
-    images[path] = module.default;
-  }
-
-  return images;
-}
 
 const MainCarousel = () => {
   const [heroTextureImports, setHeroTextureImports] = useState({});
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   useEffect(() => {
-    async function fetchImages() {
-      const images = await importAllImages();
-      setHeroTextureImports(images);
-    }
+    // Create an object with the image paths
+    const images = {};
 
-    fetchImages();
+    imagePaths.forEach((path) => {
+      images[path] = path; // Use the path directly
+    });
+
+    setHeroTextureImports(images);
   }, []);
 
   return (
@@ -77,10 +67,10 @@ const MainCarousel = () => {
         </IconButton>
       )}
     >
-      {Object.values(heroTextureImports).map((texture, index) => (
+      {Object.keys(heroTextureImports).map((path, index) => (
         <Box key={`carousel-image-${index}`}>
           <img
-            src={texture}
+            src={path} // Use the path directly as the source
             alt={`carousel-${index}`}
             style={{
               width: "100%",
