@@ -8,11 +8,11 @@ import { shades } from "../../theme";
 
 // List of image file paths
 const imagePaths = [
-    "../../assets/speaker.jpeg",
-    "../../assets/earbuds.jpeg",
-    "../../assets/smartwatch.jpeg",
-    "../../assets/speaker1.jpg",
-    "../../assets/headphone.jpeg",
+    "assets/speaker.jpeg",
+    "assets/earbuds.jpeg",
+    "assets/smartwatch.jpeg",
+    "assets/speaker1.jpg",
+    "assets/headphone.jpeg",
 ];
 
 // Function to import all images
