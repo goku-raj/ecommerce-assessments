@@ -5,4 +5,4 @@
 ## form validation - formik & YUP
 ## For Payment - Stripe (here the stripe payment failed due to some authentication error)
 ## Strapi Backenend GitHub Link - https://github.com/goku-raj/strapi-deployment.git
-# Liver Server [Totallity Corp frontEnd Challenge](https://totalitycorp-frontend-challege-vite.vercel.app)
+# Liver Server [E-commerce assessment](https://totalitycorp-frontend-challege-vite.vercel.app)
